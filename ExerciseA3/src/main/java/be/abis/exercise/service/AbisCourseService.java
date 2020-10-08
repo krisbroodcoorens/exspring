@@ -12,24 +12,24 @@ import be.abis.exercise.repository.CourseRepository;
 public class AbisCourseService implements CourseService {
 
 	@Autowired
-	private CourseRepository courseRepository;
+	private CourseRepository myCourseRepository;
 	
 	@Override
 	public List<Course> findAllCourses() {
 		// TODO Auto-generated method stub
-		return courseRepository.findAllCourses();
+		return myCourseRepository.findAllCourses();
 	}
 
 	@Override
 	public Course findCourse(int id) {
 		// TODO Auto-generated method stub
-		return courseRepository.findCourse(id);
+		return myCourseRepository.findCourse(id);
 	}
 
 	@Override
 	public Course findCourse(String shortTitle) {
 		// TODO Auto-generated method stub
-		return courseRepository.findCourse(shortTitle);
+		return myCourseRepository.findCourse(shortTitle);
 	}
 
 }
