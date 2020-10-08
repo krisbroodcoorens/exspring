@@ -16,25 +16,44 @@ import be.abis.exercise.repository.CourseRepository;
 import be.abis.exercise.repository.PersonRepository;
 
 @Service
-@Repository
-public class AbisTrainingService implements TrainingService {
+public class AbisTrainingService implements TrainingService 
+{
 
 	@Autowired
-	private PersonRepository myPersonRepo;
-	@Autowired
+	private PersonRepository myPersonRepository;
 	private CourseService myCourseService;
+	
+    @Override
+    public ArrayList<Person> getAllPersons() {
+        return myPersonRepository.getAllPersons();
+    }
 	
 	@Override
 	public Person findPerson(int id) {
 		// TODO Auto-generated method stub
-		return myPersonRepo.findPerson(id);
+		return myPersonRepository.findPerson(id);
 	}
 
-	@Override
-	public ArrayList<Person> getAllPersons() {
-		// TODO Auto-generated method stub
-		return myPersonRepo.getAllPersons();
-	}
+    @Override
+    public Person findPerson(String emailAddress, String passWord) {
+    	// TODO Auto-generated method stub
+    	return myPersonRepository.findPerson(emailAddress, passWord);
+    }
+	
+    @Override
+    public void addPerson(Person p) throws IOException {
+        myPersonRepository.addPerson(p);
+    }
+
+    @Override
+    public void deletePerson(int id) {
+        myPersonRepository.deletePerson(id);
+    }
+    
+    @Override
+    public void changePassword(Person myPerson, String newPassword) throws IOException {
+        myPersonRepository.changePassword(myPerson, newPassword);
+    }
 
 	@Override
 	public List<Course> showFollowedCourses(Person person) {
@@ -45,44 +64,5 @@ public class AbisTrainingService implements TrainingService {
 	@Override
 	public void enrollForSession(Person person, Course course, LocalDate date) throws EnrollException {
 		// TODO Auto-generated method stub
-	}
-
-	public List<Course> findAllCourses() {
-		// TODO Auto-generated method stub
-		return myCourseService.findAllCourses();
-	}
-
-	public Course findCourse(int id) {
-		// TODO Auto-generated method stub
-		return myCourseService.findCourse(id);
-	}
-
-	public Course findCourse(String shortTitle) {
-		// TODO Auto-generated method stub
-		return myCourseService.findCourse(shortTitle);
-	}
-
-	@Override
-	public void addPerson(Person p) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deletePerson(int id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public CourseService getCourseService() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCourseService(CourseService courseService) {
-		// TODO Auto-generated method stub
-		
 	}
 }
