@@ -4,8 +4,27 @@
 </head>
 <body>
 	<h1>Add Person</h1>
-	<form action="#" method="post" th:action="@{/addperson}">
-  		<input type="submit" value="Back">
-	</form> 
+	<form action="#" method="post" th:action="@{/submitaddperson}" th:object="${personInput}">
+  		<label for="firstName" >First Name:</label>
+  		<input th:field="*{firstName}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="lastName" >Last Name:</label>
+  		<input th:field="*{lastName}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="age" >Age:</label>
+  		<input th:field="*{age}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="emailAddress" >eMail Address:</label>
+  		<input th:field="*{emailAddress}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="password" >Password:</label>
+  		<input th:field="*{password}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="language" >Language:</label>
+  		<input th:field="*{language}" type="text" placeholder="Mandatory"><br><br>
+  		<label for="language" >Language:</label>
+  		<input th:field="*{language}" type="text" placeholder="Mandatory"><br><br>
+  		<div th:object="${companyInput}" >
+  		  	<label for="name" >Name:</label>
+  			<input th:field="*{name}" type="text" placeholder="Mandatory"><br><br>
+	    </div> 
+  		<button type="submit">Submit</button>
+  		<button type="reset">Reset</button>
+	</form> 	
 </body>
 </html>
