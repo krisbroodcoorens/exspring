@@ -24,9 +24,8 @@ public class ExerciseController
 	@Autowired
 	TrainingService myTrainingService; 
 	
-	private ArrayList<Person> listPersons = myTrainingService.getAllPersons();
-	private Login savedLogin = new Login();
-	private Person connectedPerson = new Person();	
+	Login savedLogin = new Login();
+	Person connectedPerson = new Person();	
 			
 	//**********************************************************************************************************
 	@GetMapping("/exercise")
@@ -144,10 +143,12 @@ public class ExerciseController
 	@GetMapping("/searchperson")
 	public ModelAndView searchPerson()
 	{
-		System.out.println("Person: " +listPersons.get(1));		
 		Map<String, Object> searchPersonModel = new HashMap<String, Object>();
-				
-		searchPersonModel.put("searchperson", listPersons);	
+		List<Person> listPersons = myTrainingService.getAllPersons();
+		System.out.println("Person: " +listPersons.get(0));
+		
+		searchPersonModel.put("listPersons", listPersons);	
+		searchPersonModel.put("numberOfPersons", listPersons.size());	
 		
 		return new ModelAndView("searchperson", searchPersonModel);
 	}

@@ -4,21 +4,16 @@
 </head>
 <body>
 	<h1>Search Person</h1>
-		<form action="#" method="post" th:action="@{/searchperson}" th:object="${listPersons}">
-            <div >
-               <label for = "title">ID</label>
-               <input th:field="*{personId}" type = "text">
-            </div>         
-            <div >
-               <label for = "firstName">First Name</label>
-                  <input th:field="*{firstName}" type = "text">
-            </div>
-            <div >
-               <label for = "lastName">Last Name</label>
-                  <input th:field="*{lastName}" type = "text">
-            </div>
-            <button type = "submit" class = "btn btn-primary">Submit</button>
-    </form>
+	<table >
+		<tbody>
+			<tr th:each="person : ${listPersons}">
+				<td th:text="${person.personId}">Test</td>
+				<td th:text="${person.firstName}">Test</td>	
+				<td th:text="${person.lastName}">Test</td>	
+			</tr>
+		</tbody>	
+	</table><br>
+	<div>Number of persons: <span th:text="${numberOfPersons}"></div><br>
 	<form action="#" method="post" th:action="@{/searchperson}">
   		<input type="submit" value="Back">
 	</form> 
