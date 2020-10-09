@@ -22,20 +22,21 @@ public class ExerciseController
 	TrainingService myTrainingService; 
 	
 	private Login savedLogin = new Login();
+	private Person connectedPerson = new Person();
 	
-	//@GetMapping("/exercise")
-	//public ModelAndView showExercise()
-	//{
-	//	Map<String, Object> exerciseModel = new HashMap<String, Object>();
-	//	
-	//	Person thirdPersonId = myTrainingService.findPerson(3);
-	//	String thirdPersonName = thirdPersonId.getFirstName()+ " " +thirdPersonId.getLastName();
-	//			
-	//	exerciseModel.put("courseTitle", myTrainingService.getCourseService().findCourse(7900).getLongTitle());
-	//	exerciseModel.put("thirdPersonName", thirdPersonName);
-	//			
-	//	return new ModelAndView("exercise", exerciseModel);
-	//}	
+	@GetMapping("/exercise")
+	public ModelAndView showExercise()
+	{
+		Map<String, Object> exerciseModel = new HashMap<String, Object>();
+		
+		Person thirdPersonId = myTrainingService.findPerson(3);
+		String thirdPersonName = thirdPersonId.getFirstName()+ " " +thirdPersonId.getLastName();
+				
+		exerciseModel.put("courseTitle", myTrainingService.getCourseService().findCourse(7900).getLongTitle());
+		exerciseModel.put("thirdPersonName", thirdPersonName);
+				
+		return new ModelAndView("exercise", exerciseModel);
+	}	
 	
 	@GetMapping("/login")
 	public ModelAndView showLoginForm()
@@ -53,6 +54,8 @@ public class ExerciseController
 		savedLogin.setEmailAddress(inputLogin.getEmailAddress());
 		savedLogin.setPassword(inputLogin.getPassword());
 		
+		connectedPerson = myTrainingService.findPerson(savedLogin.getEmailAddress(), savedLogin.getPassword());
+		
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("/welcome");	
 		
@@ -63,8 +66,6 @@ public class ExerciseController
 	public ModelAndView showWelcomePage()
 	{
 		Map<String, Object> welcomeModel = new HashMap<String, Object>();
-		
-		Person connectedPerson = myTrainingService.findPerson(savedLogin.getEmailAddress(), savedLogin.getPassword());
 						
 		welcomeModel.put("firstName", connectedPerson.getFirstName());
 				

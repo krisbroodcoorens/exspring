@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Person</title>
+</head>
+<body>
+	<h1>Search Person</h1>
+		<form action="#" method="post" th:action="@{/searchperson}" th:object="${listPersons}">
+            <div >
+               <label for = "title">ID</label>
+               <input th:field="*{personId}" type = "text">
+            </div>         
+            <div >
+               <label for = "firstName">First Name</label>
+                  <input th:field="*{firstName}" type = "text">
+            </div>
+            <div >
+               <label for = "lastName">Last Name</label>
+                  <input th:field="*{lastName}" type = "text">
+            </div>
+            <button type = "submit" class = "btn btn-primary">Submit</button>
+    </form>
+	<form action="#" method="post" th:action="@{/searchperson}">
+  		<input type="submit" value="Back">
+	</form> 
+</body>
+</html>
