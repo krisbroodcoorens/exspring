@@ -14,20 +14,20 @@ import be.abis.exercise.repository.CourseRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestCourseService {
+public class TestAbisCourseService {
 
 	@Autowired
-	CourseService myCourseService;
+	AbisCourseService myAbisCourseService;
 
 	@Test
 	public void findCourseWithId7900() 
 	{
-		assertEquals("7900",myCourseService.findCourse("7900"));
+		assertEquals("7900",myAbisCourseService.findCourse(7900).getCourseId());
 	}
 		
 	@Test
 	public void checkIfPriceCourseIsHigherThan400() 
 	{
-		assertThat(myCourseService.findCourse("7900").getPricePerDay(), Matchers.greaterThan((400.0)));
+		assertThat(myAbisCourseService.findCourse(7900).getPricePerDay(), Matchers.greaterThan((400.0)));
 	}
 }
