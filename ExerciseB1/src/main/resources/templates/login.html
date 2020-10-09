@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login Page</title>
+</head>
+<body>
+	<h1>Please login:</h1>
+	<form action="#" method="post" th:action="@{/login}" th:object="${loginInput}">
+  		<label for="emailAddress" >emailAddress:</label>
+  		<input th:field="*{emailAddress}" type="text" placeholder="Mandatory"><br>
+  		<label for="password">Password:</label>
+  		<input th:field="*{password}" type="password" placeholder="Mandatory"><br>
+  		<input type="submit" value="Submit"> <input type="reset" value="Reset">
+	</form> 
+</body>
+</html>
