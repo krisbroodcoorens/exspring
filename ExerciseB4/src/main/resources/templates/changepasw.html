@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Change Password</title>
+</head>
+<body>
+	<h1>Change Password</h1>
+	<h3>Current Password: <span th:text="${currentPassword}"></span></h3><br><br>
+	<form action="#" method="post" th:action="@{/changepasw}" th:object="${passwordInput}"> 
+	  		New Password: <input th:field="*{password}" type="text" placeholder="Mandatory"><br><br>
+	  	<button type="submit">Submit</button>
+	  	<button type="reset">Reset</button>
+	</form> 	
+	<br><br>
+	<a href="/personadmin"><button>Back</button></a> 
+</body>
+</html>
