@@ -7,9 +7,6 @@ public class Address {
 	private String zipcode;
 	private int nr;
 	
-	public Address()
-	{		
-	}
 	
 	public String getStreet() {
 		return street;
@@ -35,4 +32,7 @@ public class Address {
 	public void setNr(int nr) {
 		this.nr = nr;
 	}
+
+	
+
 }

@@ -12,7 +12,6 @@ public interface PersonRepository {
 	    Person findPerson(String emailAddress, String passWord);
 	    void addPerson(Person p) throws IOException;
 	    public void deletePerson(int id);
-	    public int getMaxPersonId();
 	    void changePassword(Person p, String newPswd) throws IOException;
 
 }

@@ -188,17 +188,4 @@ public class FilePersonRepository implements PersonRepository {
 		pw.close();
 	}
 
-	public int getMaxPersonId()
-	{
-		int maxPersonId = 0;
-		Iterator<Person> iter = allPersons.iterator();
-		while (iter.hasNext()) {
-			Person pers = iter.next();
-			if (pers.getPersonId() >= maxPersonId)
-			{
-				maxPersonId = pers.getPersonId();
-			}
-		}
-		return maxPersonId;
-	}
 }

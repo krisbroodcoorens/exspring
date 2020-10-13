@@ -16,10 +16,12 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import be.abis.exercise.model.Address;
 import be.abis.exercise.model.Company;
+import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Login;
 import be.abis.exercise.model.Person;
 import be.abis.exercise.repository.FilePersonRepository;
 import be.abis.exercise.service.AbisTrainingService;
+import be.abis.exercise.service.CourseService;
 import be.abis.exercise.service.TrainingService;
 
 @Controller
@@ -27,9 +29,14 @@ public class ExerciseController
 {	
 	@Autowired
 	TrainingService myTrainingService; 
+	@Autowired
+	CourseService myCourseService; 
 	
 	Login savedLogin = new Login();
 	Person connectedPerson = new Person();	
+	Course savedCourse = new Course();
+	Person savedPerson = new Person();
+	int newPersonId = 0; 
 			
 	//**********************************************************************************************************
 	@GetMapping("/exercise")
@@ -45,7 +52,7 @@ public class ExerciseController
 				
 		return new ModelAndView("exercise", exerciseModel);
 	}
-	//**********************************************************************************************************
+	//*** LOGIN SCREEN - login.html ****************************************************************************
 	
 	@GetMapping("/login")
 	public ModelAndView showLoginForm()
@@ -71,7 +78,7 @@ public class ExerciseController
 		return new ModelAndView(redirectView);
 	}
 	
-	//**********************************************************************************************************
+	//*** WELCOME SCREEN - welcome.html **********************************************************************
 	
 	@GetMapping("/welcome")
 	public ModelAndView showWelcomePage()
@@ -92,13 +99,12 @@ public class ExerciseController
 		return new ModelAndView(redirectView);
 	}
 	
-	//**********************************************************************************************************
+	//*** PERSON ADMINISTRATION SCREEN - personadmin.html *********************************************
 	
 	@GetMapping("/personadmin")
 	public ModelAndView showPersonAdmin()
 	{
 		Map<String, Object> personAdminModel = new HashMap<String, Object>();
-			
 		return new ModelAndView("personadmin", personAdminModel);
 	}
 	
@@ -111,75 +117,179 @@ public class ExerciseController
 		return new ModelAndView(redirectView);
 	}
 	
-	//**********************************************************************************************************
-	
-	@PostMapping(value={"/changepasw", "/addperson", "/removeperson", "/searchperson"})	
-	public ModelAndView backToPersonAdmin()
-	{
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("/personadmin");	
-		
-		return new ModelAndView(redirectView);
-	}
-	
-	//**********************************************************************************************************
+	//*** CHANGE PASSWORD SCREEN - changepasw.html **********************************************************
 	
 	@GetMapping("/changepasw")
 	public ModelAndView changePassword()
 	{
-		Map<String, Object> changePasswordModel = new HashMap<String, Object>();
-			
-		return new ModelAndView("changepasw", changePasswordModel);
+		Map<String, Object> changePasswordScreenModel = new HashMap<String, Object>();
+		Person passwordInput = new Person();
+		System.out.println (connectedPerson.getFirstName());
+		changePasswordScreenModel.put("currentPassword", connectedPerson.getPassword());
+		changePasswordScreenModel.put("passwordInput", passwordInput);
+		return new ModelAndView("changepasw", changePasswordScreenModel);
 	}
 	
-	//**********************************************************************************************************
-	
-	@GetMapping("/addperson")
-	public ModelAndView showAddPerson()
+	@PostMapping("/changepasw")
+	public ModelAndView submitChangedPassword(Person passwordInput) throws IOException
 	{
-		Map<String, Object> addPersonModel = new HashMap<String, Object>();
-		addPersonModel.put("personInput", new Person());
-		return new ModelAndView("addperson", addPersonModel);
-	}
-	
-	@PostMapping("/submitaddperson")
-	public ModelAndView submitAddPerson(Person personInput, Company companyInput, Address addressInput) throws IOException
-	{
-		Map<String, Object> addPersonModel = new HashMap<String, Object>();
-
-		companyInput.setAddress(addressInput);
-		personInput.setCompany(companyInput);		
-		myTrainingService.addPerson(personInput);
-				
+		System.out.println (connectedPerson.getFirstName());
+		myTrainingService.changePassword(connectedPerson, passwordInput.getPassword());
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("/personadmin");
 		return new ModelAndView(redirectView);
 	}
 	
-	//**********************************************************************************************************
+	//*** ADD PERSON SCREEN - addperson.html ****************************************************************
+	
+	@GetMapping("/addperson")
+	public ModelAndView showAddPerson()
+	{
+		Map<String, Object> showAddPersonModel = new HashMap<String, Object>();
+		Address inputAddress = new Address();
+		Company inputCompany = new Company();
+		Person inputPerson = new Person();		
+		newPersonId = myTrainingService.getMaxPersonId() + 1;
+		showAddPersonModel.put("newPersonId", newPersonId);
+		showAddPersonModel.put("personInput", inputPerson);
+		return new ModelAndView("addperson", showAddPersonModel);
+	}
+	
+	@PostMapping("/addperson")
+	public ModelAndView submitAddPerson(Person personInput) throws IOException
+	{
+		personInput.setPersonId(newPersonId);
+		myTrainingService.addPerson(personInput);
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("/personadmin");
+		return new ModelAndView(redirectView);
+	}
+	
+	//*** SEARCH COURSE(S) SCREEN - searchcourse.html*******************************************************
+
+	@GetMapping("/searchcourse")
+	public ModelAndView showCourseScreen()
+	{
+		Map<String, Object> showCourseFormModel = new HashMap<String, Object>();
+		showCourseFormModel.put("courseInput", new Course());
+		int numberOfCourses=0;
+
+		if (savedCourse.getCourseId() != null && !(savedCourse.getCourseId().isEmpty()))
+		{
+			showCourseFormModel.put("listCourses", myCourseService.findCourse(Integer.parseInt(savedCourse.getCourseId())));
+			numberOfCourses = 1;
+		}
+		else if (savedCourse.getShortTitle() != null && !(savedCourse.getShortTitle().isEmpty()))		
+		{
+			showCourseFormModel.put("listCourses", myCourseService.findCourse(savedCourse.getShortTitle()));
+			numberOfCourses = 1;
+		}
+		else
+		{
+			List<Course> listCourses = null;
+			listCourses = myCourseService.findAllCourses();	
+			numberOfCourses = listCourses.size();
+			showCourseFormModel.put("listCourses", listCourses);
+		}	
+		
+		showCourseFormModel.put("numberOfCourses", numberOfCourses);
+		return new ModelAndView("searchcourse", showCourseFormModel);		
+	}
+	
+	@PostMapping("/searchcourse")
+	public ModelAndView submitCourseSelection(Course searchCourse)
+	{
+		savedCourse.setCourseId(searchCourse.getCourseId());
+		savedCourse.setShortTitle(searchCourse.getShortTitle());
+		
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("/searchcourse");	
+		
+		return new ModelAndView(redirectView);
+	}
+	
+	//*** SEARCH PERSON(S) SCREEN - searchperson.html ******************************************************
 	
 	@GetMapping("/searchperson")
-	public ModelAndView searchPerson()
+	public ModelAndView showPersonScreen()
 	{
-		Map<String, Object> searchPersonModel = new HashMap<String, Object>();
-		List<Person> listPersons = null;
-		listPersons = myTrainingService.getAllPersons();
-		System.out.println("Person: " +listPersons.get(0));
+		Map<String, Object> showPersonFormModel = new HashMap<String, Object>();
+		showPersonFormModel.put("searchPerson", new Person());
+		int numberOfPersons=0;
+
+		if (savedPerson.getPersonId() != 0)
+		{
+			showPersonFormModel.put("listPersons", myTrainingService.findPerson(savedPerson.getPersonId()));
+			numberOfPersons = 1;
+		}
+		else
+		{
+			List<Person> listPersons = null;
+			listPersons = myTrainingService.getAllPersons();	
+			numberOfPersons = listPersons.size();
+			showPersonFormModel.put("listPersons", listPersons);
+		}	
 		
-		searchPersonModel.put("listPersons", listPersons);	
-		searchPersonModel.put("numberOfPersons", listPersons.size());	
-		
-		return new ModelAndView("searchperson", searchPersonModel);
+		showPersonFormModel.put("numberOfPersons", numberOfPersons);
+		return new ModelAndView("searchperson", showPersonFormModel);		
 	}
 	
-	//**********************************************************************************************************
+	@PostMapping("/searchperson")
+	public ModelAndView submitPersonSelection(Person searchPersonId)
+	{
+		Map<String, Object> submitPersonsSelectionModel = new HashMap<String, Object>();
+		
+		savedPerson.setPersonId(searchPersonId.getPersonId());
+		
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("/searchperson");	
+		
+		return new ModelAndView(redirectView);
+	}
+	
+	//*** REMOVE PERSON SCREEN - removeperson.html******************************************************
 	
 	@GetMapping("/removeperson")
-	public ModelAndView removePerson()
+	public ModelAndView showRemovePersonScreen()
 	{
-		Map<String, Object> removePersonModel = new HashMap<String, Object>();
-			
-		return new ModelAndView("removeperson", removePersonModel);
+		Map<String, Object> showRemovePersonFormModel = new HashMap<String, Object>();
+		showRemovePersonFormModel.put("removePerson", new Person());
+		int numberOfPersons=0;
+
+		if (savedPerson.getPersonId() != 0)
+		{
+			showRemovePersonFormModel.put("listPersons", myTrainingService.findPerson(savedPerson.getPersonId()));
+			numberOfPersons = 1;
+		}
+		else
+		{
+			List<Person> listPersons = null;
+			listPersons = myTrainingService.getAllPersons();	
+			numberOfPersons = listPersons.size();
+			showRemovePersonFormModel.put("listPersons", listPersons);
+		}	
+		
+		showRemovePersonFormModel.put("numberOfPersons", numberOfPersons);
+		return new ModelAndView("removeperson", showRemovePersonFormModel);		
 	}
+	
+	@PostMapping("/removeperson")
+	public ModelAndView submitRemovePersonSelection(Person searchPersonId, String selectedPersonId)
+	{
+		Map<String, Object> submitRemovePersonsSelectionModel = new HashMap<String, Object>();
+		
+		savedPerson.setPersonId(searchPersonId.getPersonId());
+		
+		if (selectedPersonId != null)
+		{
+			myTrainingService.deletePerson(Integer.parseInt(selectedPersonId));
+		}
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("/removeperson");	
+		
+		return new ModelAndView(redirectView);
+	}
+
+	//**********************************************************************************************************
 }
 

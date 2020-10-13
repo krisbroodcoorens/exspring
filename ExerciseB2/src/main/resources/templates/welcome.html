@@ -4,10 +4,8 @@
 </head>
 <body>
 	<h1>Welcome <span th:text="${firstName}"></span></h1>
-	<a href="/personadmin">Person Administration</a><br><br>
+	Person Administration<br><br>
 	<a href="/searchcourse">Search Courses</a><br><br>
-	<form action="#" method="post" th:action="@{/welcome}">
-  		<input type="submit" value="Logout">
-	</form> 
+	<a href="/login"><button>Logout</button></a>
 </body>
 </html>

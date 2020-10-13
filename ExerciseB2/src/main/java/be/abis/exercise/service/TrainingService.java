@@ -23,8 +23,6 @@ public interface TrainingService
     
 	void changePassword(Person p, String newPswd) throws IOException;
 	
-	public int getMaxPersonId();
-
 	public List<Course> showFollowedCourses(Person person);
 	
 	public Course findCourse(int id);

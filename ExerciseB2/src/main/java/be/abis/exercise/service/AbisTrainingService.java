@@ -84,10 +84,4 @@ public class AbisTrainingService implements TrainingService
 		// TODO Auto-generated method stub
 		this.myCourseService = courseService;
 	}
-	
-	@Override
-	public int getMaxPersonId()
-	{
-		return myPersonRepository.getMaxPersonId();
-	}
 }

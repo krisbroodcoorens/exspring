@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Search for Courses</title>
+
+</head>
+<body>
+	<h1>Search for Courses</h1>
+	<h3>Search criteria</h3>
+	<form action="#" method="post" th:action="@{/searchcourse}" th:object="${courseInput}">
+		CourseID: <input th:field="*{courseId}" type="text" placeholder="<All>">
+  	 	Short Title: <input th:field="*{shortTitle}" type="text" placeholder="<All>"><br><br>
+  	 	<input type="submit" value="Search Course(s)">
+  	 </form>
+  	<h3>Overview courses</h3>
+  	<table>
+  		<thead>
+  			<tr>
+  				<th>CourseId</th>
+  				<th>Long Title</th>
+  				<th>Number Of Days</th>
+  				<th>Price per Day</th>
+  				<th>Short Title</th>
+  			</tr>	
+  		</thead>
+		<tbody>
+			<tr th:each="course : ${listCourses}">
+				<td th:text="${course.courseId}"></td>
+				<td th:text="${course.longTitle}"></td>
+				<td th:text="${course.numberOfDays}"></td>
+				<td th:text="${course.pricePerDay}"></td>
+				<td th:text="${course.shortTitle}"></td>	
+			</tr>
+		</tbody>	
+	</table><br><br>
+	<div>Number of courses: <span th:text="${numberOfCourses}"></div><br>
+ 	<a href="/welcome"><button>Back</button></a> 
+</body>
+</html>

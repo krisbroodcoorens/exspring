@@ -13,10 +13,6 @@ public class Person {
 	private String language;
 	private Company company;
 	
-	public Person()
-	{
-	}
-	
 	public int getPersonId() {
 		return personId;
 	}
@@ -73,4 +69,7 @@ public class Person {
 	public String toString() {
 		return "Person with id " + personId + ", " + firstName + " "+ lastName + ", works for " +company.getName() + " in " + company.getAddress().getTown();
 	}
+
+	
+
 }
