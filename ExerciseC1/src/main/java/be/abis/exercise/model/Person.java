@@ -15,7 +15,6 @@ public class Person {
 	private int age;
 	@NotBlank (message="Please enter the eMail Address")
 	private String emailAddress;
-	@NotBlank (message="Please enter the password")
 	@Size (min=6, message="Password should at least be 6 characters")
 	private String password;
 	private String language;
