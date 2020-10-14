@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Person</title>
+</head>
+<body>
+	<h1>Search for Persons</h1>
+	<h3>Search criteria</h3>
+	<form action="#" method="post" th:action="@{/searchperson}" th:object="${searchPerson}">
+		PersonID: <input th:field="*{personId}" type="text" placeholder="<All>">
+  	 	<input type="submit" value="Search Person(s)">
+  	 </form>
+  	<h3>Overview Persons</h3>
+  	<table>
+  		<thead>
+  			<tr>
+  				<th>PersonID</th>
+  				<th>First Name</th>
+  				<th>Last Name</th>
+  				<th>Age</th>
+  				<th>eMail Address</th>
+  				<th>Password</th>
+  				<th>Language</th>
+  				<th>Company Name</th>
+  				<th>Telephone Number</th>
+  				<th>VAT Number</th>
+  				<th>Address Street</th>
+  				<th>Address Town</th>
+  				<th>Address Zip Code</th>
+  				<th>Address Number</th>	
+  			</tr>	
+  		</thead>
+		<tbody>
+			<tr th:each="person : ${listPersons}">
+				<td th:text="${person.personId}"></td>
+				<td th:text="${person.firstName}"></td>
+				<td th:text="${person.lastName}"></td>
+				<td th:text="${person.age}"></td>
+				<td th:text="${person.emailAddress}"></td>
+				<td th:text="${person.password}"></td>
+				<td th:text="${person.language}"></td>
+				<td th:text="${person.company.name}"></td>
+				<td th:text="${person.company.telephoneNumber}"></td>
+				<td th:text="${person.company.vatNr}"></td>
+				<td th:text="${person.company.address.street}"></td>
+				<td th:text="${person.company.address.town}"></td>
+				<td th:text="${person.company.address.zipcode}"></td>
+				<td th:text="${person.company.address.nr}"></td>				
+			</tr>
+		</tbody>	
+	</table><br><br>
+	<div>Number of persons: <span th:text="${numberOfPersons}"></div><br>
+ 	<a href="/personadmin"><button>Back</button></a> 
+</body>
+</html>

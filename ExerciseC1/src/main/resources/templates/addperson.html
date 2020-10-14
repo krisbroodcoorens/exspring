@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Person</title>
+</head>
+<body>
+	<h1>Add Person</h1>
+	<div>New Person ID: <span th:text="${newPersonId}"></span></div>
+	<form action="#" method="post" th:action="@{/addperson}" th:object="${personInput}"> 
+	  		<h3>Person Information</h3>	  		
+	  		First Name: <input th:field="*{firstName}" type="text" placeholder="Mandatory">
+	  		<span class="text-danger" th:errors="*{firstName}" style="color:red"></span><br><br>
+  			Last Name: <input th:field="*{lastName}" type="text" placeholder="Mandatory"><br><br>
+  			Age:	<input th:field="*{age}" type="text" placeholder="Mandatory"><br><br>
+  			E-Mail Address: <input th:field="*{emailAddress}" type="text" placeholder="Mandatory">
+  			<span class="text-danger" th:errors="*{emailAddress}" style="color:red"></span><br><br>
+  			Password: <input th:field="*{password}" type="text" placeholder="Mandatory">
+  			<span class="text-danger" th:errors="*{password}" style="color:red"></span><br><br>
+  			Language: <select th:field="*{language}">
+	    					<option th:value="'NL'" th:text="Nederlands"></option>
+	    					<option th:value="'FR'" th:text="Français"></option>
+	    					<option th:value="'DE'" th:text="Deutsch"></option>
+	    					<option th:value="'EN'" th:text="English"></option>
+	    					<option th:value="'OT'" th:text="Other"></option>
+					</select>  			
+  			<h3>Company Information</h3>
+  			Company Name: <input th:field="*{company.name}" type="text" placeholder="Mandatory">
+  			<span class="text-danger" th:errors="*{company.name}" style="color:red"></span><br><br>
+  			Telephone Number: <input th:field="*{company.telephoneNumber}" type="text" placeholder="Mandatory"><br><br>		
+  			VAT Number: <input th:field="*{company.vatNr}" type="text" placeholder="Mandatory"><br><br>	
+  			<h3>Address Information</h3>	
+  			Street: <input th:field="*{company.address.street}" type="text" placeholder="Mandatory"><br><br>	
+  			Town: <input th:field="*{company.address.town}" type="text" placeholder="Mandatory">		
+  			<span class="text-danger" th:errors="*{company.address.town}" style="color:red"></span><br><br>
+  			ZIP Code: <input th:field="*{company.address.zipcode}" type="text" placeholder="Mandatory"><br><br>
+  			Number: <input th:field="*{company.address.nr}" type="text" placeholder="Mandatory"><br><br>  				
+	  	<button type="submit">Submit</button>
+	  	<button type="reset">Reset</button>
+	</form> 	
+	<br><br>
+	<a href="/personadmin"><button>Back</button></a> 
+</body>
+</html>
