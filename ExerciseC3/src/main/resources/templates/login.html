@@ -4,7 +4,7 @@
 </head>
 <body>
 	<h1>Please login:</h1>
-	<form action="#" method="post" th:action="@{/login}" th:object="${loginInput}">
+	<form action="#" method="post" th:action="@{/login}" th:object="${login}">
   		EmailAddress:<input th:field="*{emailAddress}" type="text" placeholder="Mandatory"><br><br>
   		Password:<input th:field="*{password}" type="password" placeholder="Mandatory"><br><br>
   		<span style="color:red" th:errors="*{global}"></span><br><br>

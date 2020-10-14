@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -66,33 +67,30 @@ public class ExerciseController
 	{
 		Map<String, Object> loginModel = new HashMap<String, Object>();
 				
-		loginModel.put("loginInput", new Login());
+		loginModel.put("login", new Login());
 		
 		return new ModelAndView("login", loginModel);	
 	}	
 	
 	@PostMapping("/login")
-	public ModelAndView submitLoginForm(Login inputLogin,  BindingResult resultLogin)  
+	public String submitLoginForm(Model model, Login login,  BindingResult resultLogin)  
 	{
-		savedLogin.setEmailAddress(inputLogin.getEmailAddress());
-		savedLogin.setPassword(inputLogin.getPassword());
+		savedLogin.setEmailAddress(login.getEmailAddress());
+		savedLogin.setPassword(login.getPassword());
 		connectedPerson = myTrainingService.findPerson(savedLogin.getEmailAddress(), savedLogin.getPassword());
 		
 		System.out.println("ConnectedPerson: " +connectedPerson);
-		System.out.println("inputLogin: " +inputLogin);
+		System.out.println("inputLogin: " +login);
 		
 		if (connectedPerson != null)
 		{
-			RedirectView redirectView = new RedirectView();
-			redirectView.setUrl("/welcome");				
-			return new ModelAndView(redirectView);	
+			return "redirect:/welcome";
 		}
 		else
 		{
-			RedirectView redirectView = new RedirectView();
-			resultLogin.reject("global", "Login not valid. Please try again");
-			redirectView.setUrl("/login");		
-			return new ModelAndView(redirectView);	
+			System.out.println("login not correct");
+			resultLogin.reject("global", "Login incorrect. Try again");
+			return "login";	
 		}
 	}
 
